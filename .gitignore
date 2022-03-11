@@ -1,3 +1,6 @@
+# Jupyter notebooks
+*.ipynb
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -33,6 +36,7 @@ MANIFEST
 *.manifest
 *.spec
 
+# B
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
