@@ -16,12 +16,12 @@ import os
 from datetime import datetime
 import logging
 
-
 from dotenv import dotenv_values
 config = dotenv_values()
 
 
 from exo.cls import update_cls, delete_cls, copy_clr, delete_clr, parse_clr_header
+from exo.fileprocess import append_csv_header
 
 logging.basicConfig(
     format="%(levelname)s: %(asctime)s - %(message)s",
@@ -129,10 +129,11 @@ class ExoReport:
     
     @property
     def clr_header(self):
-        return parse_clr_header(self.clarity_report_clr_file)
+        return parse_clr_header(config['EXO_CLS_TEMPLATE_PATH'] + self.clarity_report_clr_file)
 
-    def save_to_csv(self):
-        """ save a csv file when the cmd is excuted """
+    def _export_csv(self):
+        """ save the clarity exported csv file when the cmd is excuted.
+        NOTE: the csv file has no header. """
 
         # preparation by copying clr and cls files into exo folder
         cls_file = None
@@ -150,14 +151,25 @@ class ExoReport:
         logging.info("Updating clr file...")
         copy_clr(config['EXO_CLS_TEMPLATE_PATH'] + self.clarity_report_clr_file, self.country)
 
-        logging.info(f"Executing {self.command_line}")
+        logging.info("Executing clarity report...")
+        logging.debug(f"Executing {self.command_line}")
         os.system(self.command_line)
 
-        logging.info(f"{self.csv_file_name} was saved in {config['EXO_EXPORT_FILE_PATH']}.")
-
+        
         if cls_file:
             delete_cls(cls_file, self.country)
             logging.info(f"{os.path.basename(cls_file)} was deleted.")
 
         delete_clr(config['EXO_CLS_TEMPLATE_PATH'] + self.clarity_report_clr_file, self.country)
         logging.info(f"{self.clarity_report_clr_file} was deleted.")
+        
+        return None
+    
+    def save_csv(self):
+        
+        self._export_csv()
+        
+        append_csv_header(config['EXO_EXPORT_FILE_PATH'] + self.csv_file_name, self.clr_header)
+        logging.info(f"{self.csv_file_name} was saved in {config['EXO_EXPORT_FILE_PATH']}.")
+
+        return None

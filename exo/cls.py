@@ -84,3 +84,13 @@ def parse_clr_header(clr_file_path):
     header = [k for k, _ in sorted(header_order.items(), key=lambda item: item[1])]
 
     return header
+
+def append_csv_header(csv_file_path, header):
+    
+    with open(csv_file_path, 'r', newline='') as f:
+        r = csv.reader(f)
+        data = [line for line in r]
+    with open('file.csv','w',newline='') as f:
+        w = csv.writer(f)
+        w.writerow(['ColA','ColB'])
+        w.writerows(data)

@@ -11,3 +11,14 @@ def remove_csv_linebreak(old_csv, new_csv):
                 if '\n' in value:
                     row[index] = row[index].replace('\n', '')
             writer.writerow(row)
+            
+            
+def append_csv_header(csv_file_path, header):
+    
+    with open(csv_file_path, 'r', newline='') as f:
+        r = csv.reader(f)
+        data = [line for line in r]
+    with open(csv_file_path, 'w', newline='') as f:
+        w = csv.writer(f)
+        w.writerow(header)
+        w.writerows(data)
