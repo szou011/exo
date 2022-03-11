@@ -21,7 +21,7 @@ from dotenv import dotenv_values
 config = dotenv_values()
 
 
-from exo.cls import update_cls, delete_cls, copy_clr, delete_clr
+from exo.cls import update_cls, delete_cls, copy_clr, delete_clr, parse_clr_header
 
 logging.basicConfig(
     format="%(levelname)s: %(asctime)s - %(message)s",
@@ -125,6 +125,11 @@ class ExoReport:
                 self.flatten_params,
             ]
         )
+
+    
+    @property
+    def clr_header(self):
+        return parse_clr_header(self.clarity_report_clr_file)
 
     def save_to_csv(self):
         """ save a csv file when the cmd is excuted """
