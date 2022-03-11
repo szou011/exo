@@ -2,8 +2,8 @@ import os
 import shutil
 import configparser
 
-from .clarity_export_config import AU_CLARITY_REPORT_PATH, NZ_CLARITY_REPORT_PATH
-
+from dotenv import dotenv_values
+config = dotenv_values()
 
 def update_cls(template_file_path, country, params):
     template_config = configparser.ConfigParser()
@@ -19,9 +19,9 @@ def update_cls(template_file_path, country, params):
                 target_config[param][key] = item
 
     if country == "NZ":
-        clarity_report_path = NZ_CLARITY_REPORT_PATH
+        clarity_report_path = config['NZ_CLARITY_REPORT_PATH']
     elif country == "AU":
-        clarity_report_path = AU_CLARITY_REPORT_PATH
+        clarity_report_path = config['AU_CLARITY_REPORT_PATH']
 
     with open(
         clarity_report_path + os.path.basename(template_file_path), "w"
@@ -34,9 +34,9 @@ def update_cls(template_file_path, country, params):
 def delete_cls(template_file_path, country):
 
     if country == "NZ":
-        clarity_report_path = NZ_CLARITY_REPORT_PATH
+        clarity_report_path = config['NZ_CLARITY_REPORT_PATH']
     elif country == "AU":
-        clarity_report_path = AU_CLARITY_REPORT_PATH
+        clarity_report_path = config['AU_CLARITY_REPORT_PATH']
 
     os.remove(clarity_report_path + os.path.basename(template_file_path))
 
@@ -46,9 +46,9 @@ def delete_cls(template_file_path, country):
 def copy_clr(template_file_path, country):
 
     if country == "NZ":
-        clarity_report_path = NZ_CLARITY_REPORT_PATH
+        clarity_report_path = config['NZ_CLARITY_REPORT_PATH']
     elif country == "AU":
-        clarity_report_path = AU_CLARITY_REPORT_PATH
+        clarity_report_path = config['AU_CLARITY_REPORT_PATH']
 
     shutil.copyfile(
         template_file_path, clarity_report_path + os.path.basename(template_file_path)
@@ -60,9 +60,9 @@ def copy_clr(template_file_path, country):
 def delete_clr(template_file_path, country):
 
     if country == "NZ":
-        clarity_report_path = NZ_CLARITY_REPORT_PATH
+        clarity_report_path = config['NZ_CLARITY_REPORT_PATH']
     elif country == "AU":
-        clarity_report_path = AU_CLARITY_REPORT_PATH
+        clarity_report_path = config['AU_CLARITY_REPORT_PATH']
 
     os.remove(clarity_report_path + os.path.basename(template_file_path))
 
